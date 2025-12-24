@@ -297,6 +297,88 @@ async function handleGetReviews(request, productId) {
   }
 }
 
+// Update product
+async function handleUpdateProduct(request, productId) {
+  try {
+    const body = await request.json();
+    const { name, description, price, category, bioStatus, location, stock, unit, image, active } = body;
+    
+    const db = await connectDB();
+    const products = db.collection('products');
+    
+    const update = {
+      updatedAt: new Date().toISOString()
+    };
+    
+    if (name !== undefined) update.name = name;
+    if (description !== undefined) update.description = description;
+    if (price !== undefined) update.price = parseFloat(price);
+    if (category !== undefined) update.category = category;
+    if (bioStatus !== undefined) update.bioStatus = bioStatus;
+    if (location !== undefined) update.location = location;
+    if (stock !== undefined) update.stock = parseInt(stock);
+    if (unit !== undefined) update.unit = unit;
+    if (image !== undefined) update.image = image;
+    if (active !== undefined) update.active = active;
+    
+    await products.updateOne({ id: productId }, { $set: update });
+    const updatedProduct = await products.findOne({ id: productId });
+    
+    return NextResponse.json({ product: updatedProduct });
+  } catch (error) {
+    console.error('Update product error:', error);
+    return NextResponse.json({ error: 'Erreur lors de la mise à jour du produit' }, { status: 500 });
+  }
+}
+
+// Delete product
+async function handleDeleteProduct(request, productId) {
+  try {
+    const db = await connectDB();
+    const products = db.collection('products');
+    
+    await products.updateOne({ id: productId }, { $set: { active: false } });
+    
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Delete product error:', error);
+    return NextResponse.json({ error: 'Erreur lors de la suppression du produit' }, { status: 500 });
+  }
+}
+
+// Get seller stats
+async function handleGetSellerStats(request, sellerId) {
+  try {
+    const db = await connectDB();
+    
+    const products = await db.collection('products').countDocuments({ sellerId, active: true });
+    
+    // Get orders containing seller's products
+    const allOrders = await db.collection('orders').find().toArray();
+    const sellerOrders = allOrders.filter(order => 
+      order.items.some(item => item.sellerId === sellerId)
+    );
+    
+    const totalSales = sellerOrders.reduce((sum, order) => {
+      const sellerItems = order.items.filter(item => item.sellerId === sellerId);
+      const sellerTotal = sellerItems.reduce((s, item) => s + (item.price * item.quantity), 0);
+      return sum + sellerTotal;
+    }, 0);
+    
+    return NextResponse.json({
+      stats: {
+        products,
+        orders: sellerOrders.length,
+        revenue: totalSales
+      },
+      recentOrders: sellerOrders.slice(0, 5)
+    });
+  } catch (error) {
+    console.error('Get seller stats error:', error);
+    return NextResponse.json({ error: 'Erreur lors de la récupération des statistiques' }, { status: 500 });
+  }
+}
+
 // Admin stats
 async function handleGetStats(request) {
   try {
