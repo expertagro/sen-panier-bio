@@ -1,0 +1,149 @@
+==============================================
+GUIDE VENDEURS - SEN PANIER BIO
+==============================================
+
+🌱 Interface Vendeur Complète pour la Gestion des Produits
+
+Ce guide explique comment utiliser l'interface vendeur améliorée de Sen Panier Bio.
+
+==============================================
+ACCÈS À L'INTERFACE VENDEUR
+==============================================
+
+1. Connectez-vous avec un compte vendeur (agriculteur, fournisseur ou transformateur)
+2. Cliquez sur le bouton "Mes Produits" dans le menu principal
+3. Vous accédez au Tableau de Bord Vendeur
+
+==============================================
+TABLEAU DE BORD VENDEUR
+==============================================
+
+Vue d'ensemble de votre activité :
+
+📊 STATISTIQUES EN TEMPS RÉEL
+   ✅ Nombre total de produits enregistrés
+   ✅ Nombre de commandes reçues
+   ✅ Revenus totaux en FCFA
+
+📋 DEUX ONGLETS PRINCIPAUX
+   1. "Mes Produits" - Liste et gestion de vos produits
+   2. "Ajouter Produit" - Enregistrer un nouveau produit
+
+==============================================
+AJOUTER UN NOUVEAU PRODUIT
+==============================================
+
+1. Cliquez sur l'onglet "+ Ajouter Produit"
+
+2. Remplissez le formulaire :
+
+   📝 INFORMATIONS PRINCIPALES
+   - Nom du produit * (Ex: Tomates biologiques de Casamance)
+   - Description détaillée * (origine, méthode de culture, qualité)
+   
+   💰 TARIFICATION
+   - Prix en FCFA * (montant)
+   - Unité * (kg, pièce, litre, sac, botte)
+   
+   🏷️ CLASSIFICATION
+   - Catégorie * :
+     • Intrants Bio
+     • Fruits & Légumes
+     • Céréales
+     • Produits Transformés
+   
+   - Statut de Certification Bio * :
+     🟢 Certifié Bio (certification officielle)
+     🟡 En Transition (conversion en cours)
+     🔵 Vérifié Plateforme (vérifié par Sen Panier Bio)
+   
+   📍 LOCALISATION & STOCK
+   - Localisation * (ville/région : Dakar, Thiès, Casamance...)
+   - Quantité en stock * (nombre d'unités disponibles)
+
+3. Cliquez sur "Enregistrer le produit"
+
+✅ Votre produit est maintenant visible sur le marketplace !
+
+==============================================
+GÉRER VOS PRODUITS EXISTANTS
+==============================================
+
+1. Cliquez sur l'onglet "Mes Produits"
+
+2. Vous voyez tous vos produits avec :
+   - Nom et description
+   - Prix et unité
+   - Statut de certification (badge coloré)
+   - Stock disponible
+   - Localisation
+   - Note et avis clients (si disponibles)
+
+3. ACTIONS DISPONIBLES PAR PRODUIT :
+
+   ✏️ MODIFIER
+   - Cliquez sur le bouton "Modifier"
+   - Le formulaire se remplit automatiquement
+   - Modifiez les informations souhaitées
+   - Cliquez sur "Mettre à jour"
+   - Ou "Annuler" pour abandonner
+
+   🗑️ SUPPRIMER
+   - Cliquez sur le bouton "Supprimer"
+   - Confirmez la suppression
+   - Le produit est désactivé (ne s'affiche plus sur le marketplace)
+
+==============================================
+BONNES PRATIQUES
+==============================================
+
+📸 DESCRIPTIONS
+✓ Soyez précis dans vos descriptions
+✓ Mentionnez l'origine et la méthode de culture
+✓ Indiquez les caractéristiques spécifiques
+
+💰 PRIX
+✓ Vérifiez les prix du marché
+✓ Soyez transparent sur vos tarifs
+✓ Mettez à jour régulièrement
+
+📦 STOCK
+✓ Maintenez votre stock à jour
+✓ Indiquez "0" quand vous n'avez plus de stock
+✓ Supprimez les produits saisonniers hors saison
+
+🌿 CERTIFICATION
+✓ Choisissez le bon statut de certification
+✓ Ayez vos certificats disponibles si demandés
+✓ Soyez honnête sur votre statut bio
+
+==============================================
+SUIVI DES COMMANDES
+==============================================
+
+Les commandes contenant vos produits apparaissent :
+- Dans vos statistiques (nombre de commandes)
+- Dans votre calcul de revenus
+- Vous pouvez les suivre depuis l'onglet "Commandes"
+
+==============================================
+ASSISTANCE
+==============================================
+
+Pour toute question :
+📧 Contactez l'équipe Sen Panier Bio
+📱 Support technique disponible
+
+==============================================
+COMPTE DE TEST VENDEUR
+==============================================
+
+Email: farmer@test.com
+Mot de passe: test123
+
+Utilisez ce compte pour tester toutes les fonctionnalités vendeur.
+
+==============================================
+
+© 2025 Sen Panier Bio - Plateforme Bio du Sénégal
+Connectons les producteurs bio aux consommateurs ! 🌱
