@@ -83,6 +83,16 @@ export default function SenPanierBio() {
     }
   }, [view, user]);
 
+  const fetchSellerStats = async () => {
+    try {
+      const res = await fetch(`/api/seller/stats/${user.id}`);
+      const data = await res.json();
+      setSellerStats(data);
+    } catch (error) {
+      console.error('Error fetching seller stats:', error);
+    }
+  };
+
   const fetchProducts = async () => {
     try {
       let url = '/api/products';
