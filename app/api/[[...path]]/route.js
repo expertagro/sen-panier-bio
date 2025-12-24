@@ -424,6 +424,10 @@ export async function GET(request, { params }) {
     return handleGetReviews(request, productId);
   }
   if (path === 'admin/stats') return handleGetStats(request);
+  if (path.startsWith('seller/stats/')) {
+    const sellerId = path.split('/')[2];
+    return handleGetSellerStats(request, sellerId);
+  }
   
   return NextResponse.json({ message: 'Sen Panier Bio API' });
 }
