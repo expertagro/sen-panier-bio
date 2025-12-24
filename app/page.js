@@ -704,168 +704,291 @@ export default function SenPanierBio() {
       {/* My Products View (Seller) */}
       {view === 'myproducts' && (
         <div className="container mx-auto px-4 py-8">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-900">Mes Produits</h2>
+          <div className="mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Tableau de Bord Vendeur</h2>
+            <p className="text-gray-600">Gérez vos produits et suivez vos ventes</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Add Product Form */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Ajouter un produit</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleAddProduct} className="space-y-4">
-                  <div>
-                    <Label>Nom du produit</Label>
-                    <Input
-                      required
-                      value={productForm.name}
-                      onChange={(e) => setProductForm({...productForm, name: e.target.value})}
-                      placeholder="Tomates biologiques"
-                    />
+          {/* Seller Stats */}
+          {sellerStats && (
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm font-medium text-gray-600">Mes Produits</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <p className="text-3xl font-bold text-green-600">{sellerStats.stats.products}</p>
+                    <Package className="h-8 w-8 text-green-500" />
                   </div>
-                  
-                  <div>
-                    <Label>Description</Label>
-                    <Textarea
-                      required
-                      value={productForm.description}
-                      onChange={(e) => setProductForm({...productForm, description: e.target.value})}
-                      placeholder="Décrivez votre produit..."
-                      rows={3}
-                    />
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm font-medium text-gray-600">Commandes Reçues</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <p className="text-3xl font-bold text-blue-600">{sellerStats.stats.orders}</p>
+                    <ShoppingCart className="h-8 w-8 text-blue-500" />
                   </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm font-medium text-gray-600">Revenus Totaux</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
                     <div>
-                      <Label>Prix (FCFA)</Label>
+                      <p className="text-3xl font-bold text-green-600">{sellerStats.stats.revenue.toLocaleString()}</p>
+                      <p className="text-xs text-gray-500 mt-1">FCFA</p>
+                    </div>
+                    <DollarSign className="h-8 w-8 text-green-600" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          <Tabs defaultValue="products" className="space-y-6">
+            <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-2">
+              <TabsTrigger value="products">Mes Produits</TabsTrigger>
+              <TabsTrigger value="add">
+                <Plus className="h-4 w-4 mr-2" />
+                {editingProduct ? 'Modifier' : 'Ajouter'} Produit
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Product List Tab */}
+            <TabsContent value="products">
+              <div className="space-y-4">
+                {myProducts.length === 0 ? (
+                  <Card>
+                    <CardContent className="py-16 text-center">
+                      <Package className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                      <p className="text-gray-500 mb-4">Aucun produit enregistré</p>
+                      <Button onClick={() => document.querySelector('[value="add"]').click()} className="bg-green-600 hover:bg-green-700">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Ajouter votre premier produit
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {myProducts.map(product => (
+                      <Card key={product.id} className={product.active ? '' : 'opacity-50'}>
+                        <CardHeader>
+                          <div className="aspect-square bg-green-50 rounded-lg mb-3 flex items-center justify-center">
+                            <Leaf className="h-16 w-16 text-green-300" />
+                          </div>
+                          <CardTitle className="text-lg">{product.name}</CardTitle>
+                          <CardDescription className="line-clamp-2">{product.description}</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                              <span className="text-2xl font-bold text-green-600">
+                                {product.price.toLocaleString()} FCFA
+                              </span>
+                              <span className="text-sm text-gray-500">/{product.unit}</span>
+                            </div>
+                            
+                            <div className="flex items-center gap-2">
+                              <Badge className={bioStatusOptions.find(b => b.value === product.bioStatus)?.color}>
+                                {bioStatusOptions.find(b => b.value === product.bioStatus)?.label}
+                              </Badge>
+                              {!product.active && <Badge variant="outline">Désactivé</Badge>}
+                            </div>
+                            
+                            <div className="text-sm space-y-1">
+                              <div className="flex items-center gap-1 text-gray-600">
+                                <MapPin className="h-4 w-4" />
+                                {product.location}
+                              </div>
+                              <div className="flex items-center gap-1 text-gray-600">
+                                <Package className="h-4 w-4" />
+                                Stock: {product.stock} {product.unit}
+                              </div>
+                              {product.rating > 0 && (
+                                <div className="flex items-center gap-1">
+                                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                                  <span className="text-sm font-medium">{product.rating.toFixed(1)}</span>
+                                  <span className="text-sm text-gray-500">({product.reviewCount})</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </CardContent>
+                        <CardFooter className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              startEditProduct(product);
+                              document.querySelector('[value="add"]').click();
+                            }}
+                            className="flex-1"
+                          >
+                            Modifier
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleDeleteProduct(product.id)}
+                          >
+                            Supprimer
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+
+            {/* Add/Edit Product Tab */}
+            <TabsContent value="add">
+              <Card>
+                <CardHeader>
+                  <CardTitle>{editingProduct ? 'Modifier le produit' : 'Ajouter un nouveau produit'}</CardTitle>
+                  <CardDescription>
+                    {editingProduct ? 'Modifiez les informations de votre produit' : 'Remplissez les informations pour enregistrer votre produit'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={editingProduct ? handleUpdateProduct : handleAddProduct} className="space-y-4">
+                    <div>
+                      <Label>Nom du produit *</Label>
+                      <Input
+                        required
+                        value={productForm.name}
+                        onChange={(e) => setProductForm({...productForm, name: e.target.value})}
+                        placeholder="Ex: Tomates biologiques de Casamance"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label>Description détaillée *</Label>
+                      <Textarea
+                        required
+                        value={productForm.description}
+                        onChange={(e) => setProductForm({...productForm, description: e.target.value})}
+                        placeholder="Décrivez votre produit: origine, méthode de culture, qualité..."
+                        rows={4}
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Prix (FCFA) *</Label>
+                        <Input
+                          type="number"
+                          required
+                          min="0"
+                          value={productForm.price}
+                          onChange={(e) => setProductForm({...productForm, price: e.target.value})}
+                          placeholder="1000"
+                        />
+                      </div>
+                      <div>
+                        <Label>Unité *</Label>
+                        <Select
+                          value={productForm.unit}
+                          onValueChange={(value) => setProductForm({...productForm, unit: value})}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="kg">Kilogramme (kg)</SelectItem>
+                            <SelectItem value="piece">Pièce</SelectItem>
+                            <SelectItem value="litre">Litre</SelectItem>
+                            <SelectItem value="sac">Sac</SelectItem>
+                            <SelectItem value="botte">Botte</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Catégorie *</Label>
+                        <Select
+                          value={productForm.category}
+                          onValueChange={(value) => setProductForm({...productForm, category: value})}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {categories.map(cat => (
+                              <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div>
+                        <Label>Statut de Certification Bio *</Label>
+                        <Select
+                          value={productForm.bioStatus}
+                          onValueChange={(value) => setProductForm({...productForm, bioStatus: value})}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {bioStatusOptions.map(status => (
+                              <SelectItem key={status.value} value={status.value}>{status.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label>Localisation (Ville/Région) *</Label>
+                      <Input
+                        required
+                        value={productForm.location}
+                        onChange={(e) => setProductForm({...productForm, location: e.target.value})}
+                        placeholder="Ex: Dakar, Thiès, Casamance, Louga..."
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label>Quantité en stock *</Label>
                       <Input
                         type="number"
                         required
-                        value={productForm.price}
-                        onChange={(e) => setProductForm({...productForm, price: e.target.value})}
-                        placeholder="1000"
+                        min="0"
+                        value={productForm.stock}
+                        onChange={(e) => setProductForm({...productForm, stock: e.target.value})}
+                        placeholder="100"
                       />
+                      <p className="text-sm text-gray-500 mt-1">
+                        Indiquez la quantité disponible à la vente
+                      </p>
                     </div>
-                    <div>
-                      <Label>Unité</Label>
-                      <Select
-                        value={productForm.unit}
-                        onValueChange={(value) => setProductForm({...productForm, unit: value})}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="kg">kg</SelectItem>
-                          <SelectItem value="piece">pièce</SelectItem>
-                          <SelectItem value="litre">litre</SelectItem>
-                          <SelectItem value="sac">sac</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    
+                    <div className="flex gap-3 pt-4">
+                      <Button type="submit" className="flex-1 bg-green-600 hover:bg-green-700">
+                        {editingProduct ? 'Mettre à jour' : 'Enregistrer le produit'}
+                      </Button>
+                      {editingProduct && (
+                        <Button type="button" variant="outline" onClick={cancelEdit}>
+                          Annuler
+                        </Button>
+                      )}
                     </div>
-                  </div>
-                  
-                  <div>
-                    <Label>Catégorie</Label>
-                    <Select
-                      value={productForm.category}
-                      onValueChange={(value) => setProductForm({...productForm, category: value})}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map(cat => (
-                          <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <Label>Statut Bio</Label>
-                    <Select
-                      value={productForm.bioStatus}
-                      onValueChange={(value) => setProductForm({...productForm, bioStatus: value})}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {bioStatusOptions.map(status => (
-                          <SelectItem key={status.value} value={status.value}>{status.label}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <Label>Localisation</Label>
-                    <Input
-                      required
-                      value={productForm.location}
-                      onChange={(e) => setProductForm({...productForm, location: e.target.value})}
-                      placeholder="Dakar, Thiès..."
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label>Stock disponible</Label>
-                    <Input
-                      type="number"
-                      required
-                      value={productForm.stock}
-                      onChange={(e) => setProductForm({...productForm, stock: e.target.value})}
-                      placeholder="100"
-                    />
-                  </div>
-                  
-                  <Button type="submit" className="w-full bg-green-600 hover:bg-green-700">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Ajouter le produit
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-
-            {/* Product List */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold">Vos produits ({myProducts.length})</h3>
-              {myProducts.map(product => (
-                <Card key={product.id}>
-                  <CardHeader>
-                    <CardTitle className="text-lg">{product.name}</CardTitle>
-                    <CardDescription>{product.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="font-semibold">{product.price.toLocaleString()} FCFA/{product.unit}</span>
-                        <Badge className={bioStatusOptions.find(b => b.value === product.bioStatus)?.color}>
-                          {bioStatusOptions.find(b => b.value === product.bioStatus)?.label}
-                        </Badge>
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        Stock: {product.stock} {product.unit}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        {product.location}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-              
-              {myProducts.length === 0 && (
-                <div className="text-center py-8">
-                  <Package className="h-12 w-12 text-gray-300 mx-auto mb-2" />
-                  <p className="text-gray-500">Aucun produit ajouté</p>
-                </div>
-              )}
-            </div>
-          </div>
+                  </form>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       )}
 
