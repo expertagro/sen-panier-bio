@@ -188,10 +188,89 @@ export default function SenPanierBio() {
           unit: 'kg'
         });
         fetchMyProducts();
+        fetchSellerStats();
       }
     } catch (error) {
       alert('Erreur lors de l\'ajout du produit');
     }
+  };
+
+  const handleUpdateProduct = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`/api/products/${editingProduct.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(productForm)
+      });
+      
+      const data = await res.json();
+      if (data.product) {
+        alert('Produit mis à jour avec succès!');
+        setEditingProduct(null);
+        setProductForm({
+          name: '',
+          description: '',
+          price: '',
+          category: 'fruits-legumes',
+          bioStatus: 'certified',
+          location: '',
+          stock: '',
+          unit: 'kg'
+        });
+        fetchMyProducts();
+        fetchSellerStats();
+      }
+    } catch (error) {
+      alert('Erreur lors de la mise à jour du produit');
+    }
+  };
+
+  const handleDeleteProduct = async (productId) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit?')) return;
+    
+    try {
+      const res = await fetch(`/api/products/${productId}`, {
+        method: 'DELETE'
+      });
+      
+      const data = await res.json();
+      if (data.success) {
+        alert('Produit supprimé avec succès!');
+        fetchMyProducts();
+        fetchSellerStats();
+      }
+    } catch (error) {
+      alert('Erreur lors de la suppression du produit');
+    }
+  };
+
+  const startEditProduct = (product) => {
+    setEditingProduct(product);
+    setProductForm({
+      name: product.name,
+      description: product.description,
+      price: product.price.toString(),
+      category: product.category,
+      bioStatus: product.bioStatus,
+      location: product.location,
+      stock: product.stock.toString(),
+      unit: product.unit
+    });
+  };
+
+  const cancelEdit = () => {
+    setEditingProduct(null);
+    setProductForm({
+      name: '',
+      description: '',
+      price: '',
+      category: 'fruits-legumes',
+      bioStatus: 'certified',
+      location: '',
+      stock: '',
+      unit: 'kg'
+    });
   };
 
   const addToCart = (product) => {
