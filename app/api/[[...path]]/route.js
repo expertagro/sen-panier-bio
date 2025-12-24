@@ -451,6 +451,21 @@ export async function PUT(request, { params }) {
     const orderId = path.split('/')[1];
     return handleUpdateOrderStatus(request, orderId);
   }
+  if (path.startsWith('products/')) {
+    const productId = path.split('/')[1];
+    return handleUpdateProduct(request, productId);
+  }
+  
+  return NextResponse.json({ error: 'Route non trouvée' }, { status: 404 });
+}
+
+export async function DELETE(request, { params }) {
+  const path = params.path ? params.path.join('/') : '';
+  
+  if (path.startsWith('products/')) {
+    const productId = path.split('/')[1];
+    return handleDeleteProduct(request, productId);
+  }
   
   return NextResponse.json({ error: 'Route non trouvée' }, { status: 404 });
 }
