@@ -1,0 +1,79 @@
+==============================================
+SEN PANIER BIO - GUIDE D'INSTALLATION
+==============================================
+
+🌱 Plateforme de Marché Bio du Sénégal
+
+PRÉREQUIS
+---------
+1. Node.js version 18 ou supérieure
+2. MongoDB installé et en cours d'exécution
+3. Yarn ou npm
+
+INSTALLATION LOCALE
+-------------------
+
+1. Décompressez l'archive sen-panier-bio.zip
+
+2. Ouvrez un terminal dans le dossier décompressé
+
+3. Installez les dépendances :
+   yarn install
+   OU
+   npm install
+
+4. Créez un fichier .env à la racine avec :
+   MONGO_URL=mongodb://localhost:27017
+   DB_NAME=sen_panier_bio
+   NEXT_PUBLIC_BASE_URL=http://localhost:3000
+
+5. Démarrez MongoDB sur votre machine
+
+6. Lancez l'application :
+   yarn dev
+   OU
+   npm run dev
+
+7. Ouvrez votre navigateur à : http://localhost:3000
+
+COMPTES DE TEST
+---------------
+Agriculteur : farmer@test.com / test123
+Consommateur : consumer@test.com / test123
+Admin : admin@test.com / admin123
+
+STRUCTURE DU PROJET
+-------------------
+/app
+├── api/[[...path]]/route.js   # Backend API
+├── page.js                     # Frontend principal
+├── layout.js                   # Layout de l'app
+└── globals.css                 # Styles globaux
+
+/public
+└── logo.jpg                    # Logo Sen Panier Bio
+
+FONCTIONNALITÉS
+---------------
+✅ Authentification multi-rôles
+✅ Marketplace de produits bio
+✅ Gestion de panier
+✅ Système de commandes
+✅ Paiement Mobile Money (Wave, Orange Money, Free Money)
+✅ Dashboard admin
+✅ Certification bio (Certifié/En transition/Vérifié)
+
+SUPPORT
+-------
+Pour toute question, consultez la documentation Next.js :
+https://nextjs.org/docs
+
+TECHNOLOGIES
+------------
+- Next.js 14
+- React 18
+- MongoDB
+- Tailwind CSS + shadcn/ui
+- bcryptjs
+
+© 2025 Sen Panier Bio - Tous droits réservés
