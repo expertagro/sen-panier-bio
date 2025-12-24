@@ -19,9 +19,11 @@ export default function SenPanierBio() {
   const [orders, setOrders] = useState([]);
   const [myProducts, setMyProducts] = useState([]);
   const [stats, setStats] = useState(null);
+  const [sellerStats, setSellerStats] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   // Auth states
   const [authMode, setAuthMode] = useState('login');
