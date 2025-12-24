@@ -76,6 +76,7 @@ export default function SenPanierBio() {
     }
     if (view === 'myproducts' && user) {
       fetchMyProducts();
+      fetchSellerStats();
     }
     if (view === 'admin' && user?.role === 'admin') {
       fetchStats();
